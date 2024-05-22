@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Final_Project__TicTacToe_
-{
+{ 
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
