@@ -25,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:board.png
 
-#begin O.png
+#begin X:/My Drive/Downloads/O.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,9 +35,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:O.png
+/build:X:/My Drive/Downloads/O.png;O.png
 
-#begin X.png
+#begin X:/My Drive/Downloads/X.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,5 +47,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:X.png
+/build:X:/My Drive/Downloads/X.png;X.png
 
