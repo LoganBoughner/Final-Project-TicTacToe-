@@ -29,6 +29,20 @@ namespace Final_Project__TicTacToe_
         bool player1;
         bool player2;
 
+        string playerTurn;
+        
+        bool square1;
+        bool square2;
+        bool square3;
+        bool square4;
+        bool square5;
+        bool square6;
+        bool square7;
+        bool square8;
+        bool square9;
+
+        private MouseState oldState;
+        private MouseState newState;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -42,18 +56,13 @@ namespace Final_Project__TicTacToe_
             _graphics.PreferredBackBufferWidth = 300;
             _graphics.PreferredBackBufferHeight = 300;
             _graphics.ApplyChanges();
-            xs = new List<Rectangle>();
-            if (player1 == true)
-            {
-                xs.Add(new Rectangle(100, 100, 100, 100));
-            }
-            os = new List<Rectangle>();
-            if (player2 == true)
-            {
-                os.Add(new Rectangle(200, 200, 100, 100));
-            }
-            boardRect = new Rectangle(300,300, 0,0);
             player1 = true; player2 = false;
+            boardRect = new Rectangle(0, 0, 300, 300);
+            playerTurn = "X";
+            
+
+
+
             base.Initialize();
         }
 
@@ -71,9 +80,34 @@ namespace Final_Project__TicTacToe_
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             mouseState = Mouse.GetState();
+           
+            if (newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+            {
+                // Loop through rectangle list and determine which was clicked on
+                //was clicked rectanglew not owned, if not assign owner and switch turns
+            }
 
+            if (playerTurn == "X" && newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released && mouseState.X >= 300 && mouseState.Y >= 300)
+            {
+                player2 = true;
+                player1 = false;
+            }
+            if (player2 == true && newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released && mouseState.X >= 300 && mouseState.Y >= 300)
+            {
+                player2 = false;
+                player1 = true;
+            }
+
+            oldState = newState;
+            xs = new List<Rectangle>();
+            
+            xs.Add(new Rectangle(105, 105, 90, 90)); // perfect spawn + size
+            
+            os = new List<Rectangle>();
+
+            os.Add(new Rectangle(205, 205, 90, 90)); // perfect spawn + size
             // TODO: Add your update logic here
-
+           
             base.Update(gameTime);
         }
 

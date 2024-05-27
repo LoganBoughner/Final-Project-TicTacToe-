@@ -14,6 +14,7 @@
     <Compile Remove="AI.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Content\board.png" />
     <None Remove="Content\O.png" />
     <None Remove="Content\X.png" />
     <None Remove="Icon.ico" />
