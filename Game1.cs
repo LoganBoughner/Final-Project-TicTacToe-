@@ -13,13 +13,13 @@ namespace Final_Project__TicTacToe_
         enum State
         {
             intro,
-            instucctions,
+            instuctions,
             game,
             end
 
         }
         KeyboardState keyboardState;
-        MouseState mouseState;
+        MouseState mouseState;     
         Texture2D boardTexture;
         Rectangle boardRect;
         Texture2D xTexture;
@@ -43,13 +43,17 @@ namespace Final_Project__TicTacToe_
             _graphics.PreferredBackBufferHeight = 300;
             _graphics.ApplyChanges();
             xs = new List<Rectangle>();
-
-            xs.Add (new Rectangle(100,100,100,100));
-
+            if (player1 == true)
+            {
+                xs.Add(new Rectangle(100, 100, 100, 100));
+            }
             os = new List<Rectangle>();
-
-            os.Add(new Rectangle(200, 200, 100, 100));
+            if (player2 == true)
+            {
+                os.Add(new Rectangle(200, 200, 100, 100));
+            }
             boardRect = new Rectangle(300,300, 0,0);
+            player1 = true; player2 = false;
             base.Initialize();
         }
 
@@ -67,6 +71,7 @@ namespace Final_Project__TicTacToe_
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             mouseState = Mouse.GetState();
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
