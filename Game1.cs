@@ -26,23 +26,13 @@ namespace Final_Project__TicTacToe_
         List<Rectangle> xs; 
         Texture2D oTexture;
         List<Rectangle> os;
-        bool player1;
-        bool player2;
-
-        string playerTurn;
+        List<Rectangle> tileRects;
+        List<string> tileOwners;
         
-        bool square1;
-        bool square2;
-        bool square3;
-        bool square4;
-        bool square5;
-        bool square6;
-        bool square7;
-        bool square8;
-        bool square9;
-
+        string playerTurn;
         private MouseState oldState;
         private MouseState newState;
+        
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -56,10 +46,41 @@ namespace Final_Project__TicTacToe_
             _graphics.PreferredBackBufferWidth = 300;
             _graphics.PreferredBackBufferHeight = 300;
             _graphics.ApplyChanges();
-            player1 = true; player2 = false;
             boardRect = new Rectangle(0, 0, 300, 300);
             playerTurn = "X";
-            
+            xs = new List<Rectangle>();
+
+            xs.Add(new Rectangle(105, 105, 90, 90)); // perfect spawn + size
+
+            os = new List<Rectangle>();
+
+            os.Add(new Rectangle(205, 205, 90, 90)); // perfect spawn + size
+
+            tileRects = new List<Rectangle>();
+
+            tileRects.Add(new Rectangle(5, 5, 90, 90));
+            tileRects.Add(new Rectangle(105, 5, 90, 90));
+            tileRects.Add(new Rectangle(205, 5, 90, 90));
+            tileRects.Add(new Rectangle(5, 105, 90, 90));
+            tileRects.Add(new Rectangle(105, 105, 90, 90));
+            tileRects.Add(new Rectangle(205, 105, 90, 90));
+            tileRects.Add(new Rectangle(5, 205, 90, 90));
+            tileRects.Add(new Rectangle(105, 205, 90, 90));
+            tileRects.Add(new Rectangle(205, 205, 90, 90));
+           
+            tileOwners =
+            [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+            ];
+
 
 
 
@@ -81,31 +102,36 @@ namespace Final_Project__TicTacToe_
                 Exit();
             mouseState = Mouse.GetState();
            
+           
             if (newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
             {
+                for (int i = 0; i < tileRects.Count; i++ )
+                    if (tileRects[i].Contains(mouseState.Position))
+                    {
+                        if (tileOwners[i] == "")
+                        {
+                            if (playerTurn == "X")
+                            {
+                                tileOwners[i] = "X";
+                                playerTurn = "O";
+                            }
+                            else if (playerTurn == "O") 
+                            {
+                                tileOwners[i] = "O";
+                                playerTurn = "X";
+                            }
+                        }
+                    }
+                    
+                
                 // Loop through rectangle list and determine which was clicked on
-                //was clicked rectanglew not owned, if not assign owner and switch turns
+                //was clicked rectangle not owned, if not assign owner and switch turns
             }
 
-            if (playerTurn == "X" && newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released && mouseState.X >= 300 && mouseState.Y >= 300)
-            {
-                player2 = true;
-                player1 = false;
-            }
-            if (player2 == true && newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released && mouseState.X >= 300 && mouseState.Y >= 300)
-            {
-                player2 = false;
-                player1 = true;
-            }
+            
 
             oldState = newState;
-            xs = new List<Rectangle>();
-            
-            xs.Add(new Rectangle(105, 105, 90, 90)); // perfect spawn + size
-            
-            os = new List<Rectangle>();
-
-            os.Add(new Rectangle(205, 205, 90, 90)); // perfect spawn + size
+           
             // TODO: Add your update logic here
            
             base.Update(gameTime);
@@ -120,8 +146,9 @@ namespace Final_Project__TicTacToe_
             
             _spriteBatch.Draw(boardTexture, boardRect, Color.White);
             
-            foreach (Rectangle x in xs)
-                _spriteBatch.Draw(xTexture, x, Color.White);
+            foreach (string("X") in tileOwners)
+                _spriteBatch.Draw(xTexture, , Color.White);
+            
 
             foreach (Rectangle o in os)
                 _spriteBatch.Draw(oTexture, o, Color.White);
