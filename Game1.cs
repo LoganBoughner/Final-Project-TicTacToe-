@@ -22,10 +22,8 @@ namespace Final_Project__TicTacToe_
         MouseState mouseState;     
         Texture2D boardTexture;
         Rectangle boardRect;
-        Texture2D xTexture;
-        List<Rectangle> xs; 
+        Texture2D xTexture; 
         Texture2D oTexture;
-        List<Rectangle> os;
         List<Rectangle> tileRects;
         List<string> tileOwners;
         
@@ -48,13 +46,7 @@ namespace Final_Project__TicTacToe_
             _graphics.ApplyChanges();
             boardRect = new Rectangle(0, 0, 300, 300);
             playerTurn = "X";
-            xs = new List<Rectangle>();
-
-            xs.Add(new Rectangle(105, 105, 90, 90)); // perfect spawn + size
-
-            os = new List<Rectangle>();
-
-            os.Add(new Rectangle(205, 205, 90, 90)); // perfect spawn + size
+            
 
             tileRects = new List<Rectangle>();
 
@@ -124,8 +116,8 @@ namespace Final_Project__TicTacToe_
                     }
                     
                 
-                // Loop through rectangle list and determine which was clicked on
-                //was clicked rectangle not owned, if not assign owner and switch turns
+                
+                //Check if someone won
             }
 
             
@@ -146,12 +138,19 @@ namespace Final_Project__TicTacToe_
             
             _spriteBatch.Draw(boardTexture, boardRect, Color.White);
             
-            foreach (string("X") in tileOwners)
-                _spriteBatch.Draw(xTexture, , Color.White);
+            for (int i = 0; i < tileRects.Count; i++)
+            {
+                if (tileOwners[i] == "X")
+                    _spriteBatch.Draw(xTexture, tileRects[i], Color.White);
+                else if (tileOwners[i] == "O")
+                    _spriteBatch.Draw(oTexture, tileRects[i], Color.White);
+                else
+                    _spriteBatch.Draw(, tileRects[i], Color.White);
+            }
+               
             
 
-            foreach (Rectangle o in os)
-                _spriteBatch.Draw(oTexture, o, Color.White);
+            
            
             _spriteBatch.End();
             
