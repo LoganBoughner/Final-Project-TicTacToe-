@@ -144,7 +144,7 @@ namespace Final_Project__TicTacToe_
                     _spriteBatch.Draw(xTexture, tileRects[i], Color.White);
                 else if (tileOwners[i] == "O")
                     _spriteBatch.Draw(oTexture, tileRects[i], Color.White);
-                else
+               // else
                     _spriteBatch.Draw(, tileRects[i], Color.White);
             }
                
