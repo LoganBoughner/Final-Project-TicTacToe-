@@ -13,6 +13,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin backbtn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:backbtn.png
+
 #begin Empty.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -37,6 +49,13 @@
 /processorParam:TextureFormat=Color
 /build:instructionbtn.png
 
+#begin Instructions.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Instructions.spritefont
+
 #begin Startbtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -48,6 +67,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Startbtn.png
+
+#begin wins.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:wins.spritefont
 
 #begin X:/My Drive/Downloads/board.png
 /importer:TextureImporter

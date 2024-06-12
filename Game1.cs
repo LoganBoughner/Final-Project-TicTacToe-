@@ -15,13 +15,17 @@ namespace Final_Project__TicTacToe_
             intro,
             instuctions,
             game,
-            end
+            xWin,
+            oWin,
+            tie
 
         }
         KeyboardState keyboardState;
         MouseState mouseState;     
         Texture2D boardTexture;
         Rectangle boardRect;
+        Texture2D cursorTexture;
+        Rectangle cursorRect;
         Texture2D xTexture; 
         Texture2D oTexture;
         Texture2D emptyTexture;
@@ -29,19 +33,25 @@ namespace Final_Project__TicTacToe_
         Rectangle startRect;
         Texture2D instructionTexture;
         Rectangle instructionRect;
+        Texture2D backbtnTexture;
+        Rectangle backbtnRect;
         List<Rectangle> tileRects;
         List<string> tileOwners;
-        
+        SpriteFont TextFont;
+        SpriteFont WinFont;
         string playerTurn;
         private MouseState oldState;
         private MouseState newState;
         private Screen screen;
+        int xWins;
+        int oWins;
+        int ties;
         
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
         }
 
         protected override void Initialize()
@@ -54,7 +64,8 @@ namespace Final_Project__TicTacToe_
             playerTurn = "X";
             instructionRect = new Rectangle(0, 75, 200, 75);
             startRect = new Rectangle(0,0, 100,75);
-
+            backbtnRect = new Rectangle(200, 200, 100, 100);
+            
             screen = Screen.intro;
 
             tileRects = new List<Rectangle>();
@@ -82,10 +93,12 @@ namespace Final_Project__TicTacToe_
                 "",
             ];
 
-
+           
 
 
             base.Initialize();
+            cursorTexture = xTexture;
+            cursorRect = new Rectangle(0,0, 20,20);
         }
 
         protected override void LoadContent()
@@ -97,6 +110,12 @@ namespace Final_Project__TicTacToe_
             emptyTexture = Content.Load<Texture2D>("Empty");
             startTexture = Content.Load<Texture2D>("Startbtn");
             instructionTexture = Content.Load<Texture2D>("instructionbtn");
+            backbtnTexture = Content.Load<Texture2D>("backbtn");
+            TextFont = Content.Load<SpriteFont>("instructions");
+            WinFont = Content.Load<SpriteFont>("wins");
+            xWins = 0;
+            oWins = 0;
+            ties = 0;
             // TODO: use this.Content to load your game content here
         }
 
@@ -106,60 +125,120 @@ namespace Final_Project__TicTacToe_
                 Exit();
             oldState = mouseState;
             mouseState = Mouse.GetState();
-           
-           
-            if (screen == Screen.game)
-            if (mouseState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+            cursorRect.Location = mouseState.Position;
+            if (screen == Screen.intro)
             {
-                for (int i = 0; i < tileRects.Count; i++ )
-                    if (tileRects[i].Contains(mouseState.Position))
+                if (mouseState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+                {
+                    if (startRect.Contains(cursorRect))
                     {
-                       
-                        if (tileOwners[i] == "")
-                        {
-                            if (playerTurn == "X")
-                            {
-                                tileOwners[i] = "X";
-                                if (CheckWin())
-                                {
-                                    this.Window.Title = "X WIN"; // not perm
-                                    //display winner
-                                    // add cheering when win is true
-                                }
-                                else
-                                    playerTurn = "O";
-                            }
-                            else if (playerTurn == "O") 
-                            {
-                                tileOwners[i] = "O";
-
-                                if (CheckWin())
-                                {
-                                    this.Window.Title = "O WIN"; // not perm
-                                    //display winner
-                                    // add cheering when win is true
-                                }
-                                else
-                                    playerTurn = "X";
-                            }
-                            // Check for a win
-                            // Horizontal
-                            
-
-
-
-                        }
+                        screen = Screen.game;
                     }
-                    
-                
-                
-                //Check if someone won
-                //Figure out why the X/O appear on the board
+                    else if (instructionRect.Contains(mouseState.Position))
+                    {
+                        screen = Screen.instuctions;
+                    }
+                }
             }
-
+            else if (screen == Screen.instuctions)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+                {
+                    if (backbtnRect.Contains(cursorRect))
+                    {
+                        screen = Screen.intro;
+                    }
+                }
+            }
             
 
-            oldState = newState;
+            else if (screen == Screen.game)
+            {
+                
+                if (mouseState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+                {
+                    
+                    for (int i = 0; i < tileRects.Count; i++)
+                        if (tileRects[i].Contains(cursorRect))
+                        {
+
+                            if (tileOwners[i] == "")
+                            {
+                                if (playerTurn == "X")
+                                {
+                                    tileOwners[i] = "X";
+                                    if (CheckWin())
+                                    {
+                                        screen = Screen.xWin;
+                                        playerTurn = "X";
+                                        xWins += 1;
+
+                                        // add cheering when win is true
+                                    }
+                                    else if (tileOwners[0] != "" && tileOwners[1] != "" && tileOwners[2] != "" && tileOwners[3] != "" && tileOwners[4] != "" && tileOwners[5] != "" && tileOwners[6] != "" && tileOwners[7] != "" && tileOwners[8] != "")
+                                    {
+                                        screen = Screen.tie;
+                                        ties += 1;
+                                    }
+                                    else
+                                    {
+                                        playerTurn = "O";
+                                        cursorTexture = oTexture;
+                                    }
+                                }
+                                else if (playerTurn == "O")
+                                {
+                                    tileOwners[i] = "O";
+
+                                    if (CheckWin())
+                                    {
+                                        screen = Screen.oWin;
+                                        playerTurn = "X";
+                                        oWins += 1;
+                                        cursorTexture = xTexture;
+                                        // add cheering when win is true
+                                    }
+                                    else if (tileOwners[0] != "" && tileOwners[1] != "" && tileOwners[2] != "" && tileOwners[3] != "" && tileOwners[4] != "" && tileOwners[5] != "" && tileOwners[6] != "" && tileOwners[7] != "" && tileOwners[8] != "")
+                                    {
+                                        ties += 1;
+                                        screen = Screen.tie;
+                                    }
+                                    else
+                                    {
+                                        playerTurn = "X";
+                                        cursorTexture = xTexture;
+                                    }
+                                }                               
+                            }
+                        }
+                    
+                }
+            }
+            
+            else if (screen == Screen.xWin || screen == Screen.oWin || screen == Screen.tie)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+                {
+                    if (backbtnRect.Contains(cursorRect))
+                    {
+                        screen = Screen.game;
+                        tileOwners =
+                         [
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                        ];
+                    }
+                }
+            }
+         
+
            
             // TODO: Add your update logic here
            
@@ -184,7 +263,7 @@ namespace Final_Project__TicTacToe_
             {
                 return true;
             }
-            else if (tileOwners[2] == tileOwners[4] && tileOwners[2] == tileOwners[6] && tileOwners[0] != "")
+            else if (tileOwners[2] == tileOwners[4] && tileOwners[2] == tileOwners[6] && tileOwners[2] != "")
             {
                 return true;
             }
@@ -200,8 +279,6 @@ namespace Final_Project__TicTacToe_
             {
                 return true;
             }
-            
-            // all wins are 0,3,6  1,4,7  2,5,8
 
             return false;
         }
@@ -218,8 +295,14 @@ namespace Final_Project__TicTacToe_
                 _spriteBatch.Draw(startTexture, startRect, Color.White);
                 _spriteBatch.Draw(instructionTexture, instructionRect, Color.White);
             }
+            else if (screen == Screen.instuctions)
+            {
+                _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
+                _spriteBatch.DrawString(TextFont, "Click on the square you want to place your \nX/O in. \nAfter someone wins press the back button \n(same one as in this tab) to go back \nto the game screen." , new Vector2(0, 0), Color.Black);
+
+            }
             
-            if (screen == Screen.game)
+            else if (screen == Screen.game)
             {
                 _spriteBatch.Draw(boardTexture, boardRect, Color.White);
 
@@ -230,9 +313,26 @@ namespace Final_Project__TicTacToe_
                     else if (tileOwners[i] == "O")
                         _spriteBatch.Draw(oTexture, tileRects[i], Color.White);
                     else
-                        _spriteBatch.Draw(emptyTexture, tileRects[i], Color.Red);
+                        _spriteBatch.Draw(emptyTexture, tileRects[i], Color.White);
                 }
             }
+            else if (screen == Screen.xWin)
+            {
+                _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
+                _spriteBatch.DrawString(WinFont, "X has won this round\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times\nthere has been " + (ties) + " ties", new Vector2(0, 0), Color.Black);
+            }
+            else if (screen == Screen.oWin)
+            {
+                _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
+                _spriteBatch.DrawString(WinFont, "O has won this round\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times\nthere has been " + (ties) + " ties", new Vector2(0, 0), Color.Black);
+            }
+            else if (screen == Screen.tie)
+            {
+                _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
+                _spriteBatch.DrawString(WinFont, "this round was a tie\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times\nthere has been " + (ties) + " ties", new Vector2(0, 0), Color.Black);
+            }
+            _spriteBatch.Draw(cursorTexture, cursorRect, Color.White);
+
             _spriteBatch.End();
             
             base.Draw(gameTime);
