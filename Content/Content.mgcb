@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:backbtn.png
 
+#begin Cheering.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Cheering.wav
+
 #begin Empty.png
 /importer:TextureImporter
 /processor:TextureProcessor

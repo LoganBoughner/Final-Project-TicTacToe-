@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Content\board.png" />
+    <None Remove="Content\mixkit-animated-small-group-applause-523.wav" />
     <None Remove="Content\O.png" />
     <None Remove="Content\X.png" />
     <None Remove="Icon.ico" />

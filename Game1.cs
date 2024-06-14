@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -15,11 +16,13 @@ namespace Final_Project__TicTacToe_
             intro,
             instuctions,
             game,
+            singleplayer,
             xWin,
             oWin,
             tie
 
         }
+        SoundEffect cheer;
         KeyboardState keyboardState;
         MouseState mouseState;     
         Texture2D boardTexture;
@@ -113,6 +116,7 @@ namespace Final_Project__TicTacToe_
             backbtnTexture = Content.Load<Texture2D>("backbtn");
             TextFont = Content.Load<SpriteFont>("instructions");
             WinFont = Content.Load<SpriteFont>("wins");
+            cheer = Content.Load<SoundEffect>("Cheering");
             xWins = 0;
             oWins = 0;
             ties = 0;
@@ -172,8 +176,7 @@ namespace Final_Project__TicTacToe_
                                         screen = Screen.xWin;
                                         playerTurn = "X";
                                         xWins += 1;
-
-                                        // add cheering when win is true
+                                        cheer.Play();
                                     }
                                     else if (tileOwners[0] != "" && tileOwners[1] != "" && tileOwners[2] != "" && tileOwners[3] != "" && tileOwners[4] != "" && tileOwners[5] != "" && tileOwners[6] != "" && tileOwners[7] != "" && tileOwners[8] != "")
                                     {
@@ -196,7 +199,7 @@ namespace Final_Project__TicTacToe_
                                         playerTurn = "X";
                                         oWins += 1;
                                         cursorTexture = xTexture;
-                                        // add cheering when win is true
+                                        cheer.Play();
                                     }
                                     else if (tileOwners[0] != "" && tileOwners[1] != "" && tileOwners[2] != "" && tileOwners[3] != "" && tileOwners[4] != "" && tileOwners[5] != "" && tileOwners[6] != "" && tileOwners[7] != "" && tileOwners[8] != "")
                                     {
@@ -319,17 +322,17 @@ namespace Final_Project__TicTacToe_
             else if (screen == Screen.xWin)
             {
                 _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
-                _spriteBatch.DrawString(WinFont, "X has won this round\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times\nthere has been " + (ties) + " ties", new Vector2(0, 0), Color.Black);
+                _spriteBatch.DrawString(WinFont, "X has won this round!\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times,\nthere has been " + (ties) + " ties.", new Vector2(0, 0), Color.Black);
             }
             else if (screen == Screen.oWin)
             {
                 _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
-                _spriteBatch.DrawString(WinFont, "O has won this round\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times\nthere has been " + (ties) + " ties", new Vector2(0, 0), Color.Black);
+                _spriteBatch.DrawString(WinFont, "O has won this round!\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times,\nthere has been " + (ties) + " ties.", new Vector2(0, 0), Color.Black);
             }
             else if (screen == Screen.tie)
             {
                 _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
-                _spriteBatch.DrawString(WinFont, "this round was a tie\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times\nthere has been " + (ties) + " ties", new Vector2(0, 0), Color.Black);
+                _spriteBatch.DrawString(WinFont, "this round was a tie!\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times,\nthere has been " + (ties) + " ties.", new Vector2(0, 0), Color.Black);
             }
             _spriteBatch.Draw(cursorTexture, cursorRect, Color.White);
 
