@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -19,7 +20,10 @@ namespace Final_Project__TicTacToe_
             singleplayer,
             xWin,
             oWin,
-            tie
+            tie,
+            singleplayerxwin,
+            singleplayerowin,
+            singleplayertie
 
         }
         SoundEffect cheer;
@@ -34,6 +38,8 @@ namespace Final_Project__TicTacToe_
         Texture2D emptyTexture;
         Texture2D startTexture;
         Rectangle startRect;
+        Texture2D aiButtonTexture;
+        Rectangle aiButtonRect;
         Texture2D instructionTexture;
         Rectangle instructionRect;
         Texture2D backbtnTexture;
@@ -49,6 +55,8 @@ namespace Final_Project__TicTacToe_
         int xWins;
         int oWins;
         int ties;
+        int randNum;
+        Random random;
         
         public Game1()
         {
@@ -67,6 +75,7 @@ namespace Final_Project__TicTacToe_
             playerTurn = "X";
             instructionRect = new Rectangle(0, 75, 200, 75);
             startRect = new Rectangle(0,0, 100,75);
+            aiButtonRect = new Rectangle(200, 0, 100, 75);
             backbtnRect = new Rectangle(200, 200, 100, 100);
             
             screen = Screen.intro;
@@ -112,6 +121,7 @@ namespace Final_Project__TicTacToe_
             oTexture = Content.Load<Texture2D>("O");
             emptyTexture = Content.Load<Texture2D>("Empty");
             startTexture = Content.Load<Texture2D>("Startbtn");
+            aiButtonTexture = Content.Load<Texture2D>("aibutton");
             instructionTexture = Content.Load<Texture2D>("instructionbtn");
             backbtnTexture = Content.Load<Texture2D>("backbtn");
             TextFont = Content.Load<SpriteFont>("instructions");
@@ -120,6 +130,7 @@ namespace Final_Project__TicTacToe_
             xWins = 0;
             oWins = 0;
             ties = 0;
+            random = new Random();
             // TODO: use this.Content to load your game content here
         }
 
@@ -142,6 +153,8 @@ namespace Final_Project__TicTacToe_
                     {
                         screen = Screen.instuctions;
                     }
+                    else if (aiButtonRect.Contains(cursorRect))
+                        screen = Screen.singleplayer;
                 }
             }
             else if (screen == Screen.instuctions)
@@ -217,6 +230,56 @@ namespace Final_Project__TicTacToe_
                     
                 }
             }
+            else if (screen == Screen.singleplayer)
+            { if (mouseState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+                {
+                    
+                    for (int i = 0; i < tileRects.Count; i++)
+                        if (tileRects[i].Contains(cursorRect))
+                        {
+
+                            if (tileOwners[i] == "")
+                            {
+                                if (playerTurn == "X")
+                                {
+                                    tileOwners[i] = "X";
+                                    if (CheckWin())
+                                    {
+                                        screen = Screen.singleplayerxwin;
+                                        playerTurn = "X";
+                                        xWins += 1;
+                                        cheer.Play();
+                                    }
+                                    else if (tileOwners[0] != "" && tileOwners[1] != "" && tileOwners[2] != "" && tileOwners[3] != "" && tileOwners[4] != "" && tileOwners[5] != "" && tileOwners[6] != "" && tileOwners[7] != "" && tileOwners[8] != "")
+                                    {
+                                        screen = Screen.tie;
+                                        ties += 1;
+                                    }
+                                    else
+                                    {
+                                        playerTurn = "O";
+
+                                        // Computer goes
+                                        tileOwners[ComputerTurn()] = "O";
+                                        if (CheckWin() && playerTurn == "O")
+                                        {
+                                            screen = Screen.singleplayerowin;
+                                            playerTurn = "X";
+                                            oWins += 1;
+                                        }
+                                        else playerTurn = "X";
+
+
+
+                                    }
+                                }
+                                
+                            }
+                        }
+
+                    
+                }
+            }
             
             else if (screen == Screen.xWin || screen == Screen.oWin || screen == Screen.tie)
             {
@@ -240,11 +303,33 @@ namespace Final_Project__TicTacToe_
                     }
                 }
             }
-         
+            else if (screen == Screen.singleplayerxwin || screen == Screen.singleplayerowin || screen == Screen.singleplayertie)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+                {
+                    if (backbtnRect.Contains(cursorRect))
+                    {
+                        screen = Screen.singleplayer;
+                        tileOwners =
+                         [
+                            "",
+                             "",
+                             "",
+                             "",
+                             "",
+                             "",
+                             "",
+                             "",
+                             "",
+                         ];
+                    }
+                }
+            }
 
-           
+
+
             // TODO: Add your update logic here
-           
+
             base.Update(gameTime);
         }
 
@@ -305,7 +390,7 @@ namespace Final_Project__TicTacToe_
 
             }
             
-            else if (screen == Screen.game)
+            else if (screen == Screen.game || screen == Screen.singleplayer)
             {
                 _spriteBatch.Draw(boardTexture, boardRect, Color.White);
 
@@ -334,11 +419,40 @@ namespace Final_Project__TicTacToe_
                 _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
                 _spriteBatch.DrawString(WinFont, "this round was a tie!\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times,\nthere has been " + (ties) + " ties.", new Vector2(0, 0), Color.Black);
             }
+            else if (screen ==Screen.singleplayerxwin)
+            {
+                _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
+                _spriteBatch.DrawString(WinFont, "X has won this round!\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times,\nthere has been " + (ties) + " ties.", new Vector2(0, 0), Color.Black);
+            }
+            else if (screen == Screen.singleplayerowin)
+            {
+                _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
+                _spriteBatch.DrawString(WinFont, "O has won this round!\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times,\nthere has been " + (ties) + " ties.", new Vector2(0, 0), Color.Black);
+            }
+            else if (screen == Screen.singleplayertie)
+            {
+                _spriteBatch.Draw(backbtnTexture, backbtnRect, Color.White);
+                _spriteBatch.DrawString(WinFont, "this round was a tie!\n\nX has won " + (xWins) + " times, \nO has won " + (oWins) + " times,\nthere has been " + (ties) + " ties.", new Vector2(0, 0), Color.Black);
+            }
             _spriteBatch.Draw(cursorTexture, cursorRect, Color.White);
 
             _spriteBatch.End();
             
             base.Draw(gameTime);
+        }
+
+        public int ComputerTurn()
+        {
+            bool done = false;
+            int turn = 0;
+            while (!done) 
+            {
+                turn = random.Next(9);
+                if (tileOwners[turn] == "")
+                    done = true;
+            }
+
+            return turn;
         }
     }
 }
