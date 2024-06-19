@@ -74,8 +74,8 @@ namespace Final_Project__TicTacToe_
             boardRect = new Rectangle(0, 0, 300, 300);
             playerTurn = "X";
             instructionRect = new Rectangle(0, 75, 200, 75);
-            startRect = new Rectangle(0,0, 100,75);
-            aiButtonRect = new Rectangle(200, 0, 100, 75);
+            startRect = new Rectangle(0, 0, 100, 75);
+            aiButtonRect = new Rectangle(200, 12, 100, 50);
             backbtnRect = new Rectangle(200, 200, 100, 100);
             
             screen = Screen.intro;
@@ -231,7 +231,8 @@ namespace Final_Project__TicTacToe_
                 }
             }
             else if (screen == Screen.singleplayer)
-            { if (mouseState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+            { 
+                if (mouseState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
                 {
                     
                     for (int i = 0; i < tileRects.Count; i++)
@@ -252,7 +253,7 @@ namespace Final_Project__TicTacToe_
                                     }
                                     else if (tileOwners[0] != "" && tileOwners[1] != "" && tileOwners[2] != "" && tileOwners[3] != "" && tileOwners[4] != "" && tileOwners[5] != "" && tileOwners[6] != "" && tileOwners[7] != "" && tileOwners[8] != "")
                                     {
-                                        screen = Screen.tie;
+                                        screen = Screen.singleplayertie;
                                         ties += 1;
                                     }
                                     else
@@ -312,7 +313,7 @@ namespace Final_Project__TicTacToe_
                         screen = Screen.singleplayer;
                         tileOwners =
                          [
-                            "",
+                             "",
                              "",
                              "",
                              "",
@@ -382,6 +383,7 @@ namespace Final_Project__TicTacToe_
             {
                 _spriteBatch.Draw(startTexture, startRect, Color.White);
                 _spriteBatch.Draw(instructionTexture, instructionRect, Color.White);
+                _spriteBatch.Draw(aiButtonTexture, aiButtonRect, Color.White);
             }
             else if (screen == Screen.instuctions)
             {
@@ -450,6 +452,9 @@ namespace Final_Project__TicTacToe_
                 turn = random.Next(9);
                 if (tileOwners[turn] == "")
                     done = true;
+                //else if (tileOwners[0] != "" && tileOwners[1] != "" && tileOwners[2] != "" && tileOwners[3] != "" && tileOwners[4] != "" && tileOwners[5] != "" && tileOwners[6] != "" && tileOwners[7] != "" && tileOwners[8] != "")
+                    //done = true;
+
             }
 
             return turn;
